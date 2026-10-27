@@ -1,0 +1,20 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.authRoutes = void 0;
+const express_1 = require("express");
+const auth_controller_1 = require("./auth.controller");
+const auth_middleware_1 = require("../../middleware/auth.middleware");
+const rateLimit_middleware_1 = require("../../middleware/rateLimit.middleware");
+const router = (0, express_1.Router)();
+exports.authRoutes = router;
+router.post("/signup", rateLimit_middleware_1.signupRateLimiter, auth_controller_1.AuthController.signup);
+router.post("/verify-otp", rateLimit_middleware_1.verifyOtpRateLimiter, auth_controller_1.AuthController.verifyOtp);
+router.post("/resend-otp", rateLimit_middleware_1.otpResendRateLimiter, auth_controller_1.AuthController.resendOtp);
+router.post("/login", rateLimit_middleware_1.loginRateLimiter, auth_controller_1.AuthController.login);
+router.post("/refresh", auth_controller_1.AuthController.refresh);
+router.get("/me", auth_middleware_1.authMiddleware, auth_controller_1.AuthController.me);
+router.post("/logout", auth_controller_1.AuthController.logout);
+router.post("/forgot-password", rateLimit_middleware_1.forgotPasswordRateLimiter, auth_controller_1.AuthController.forgotPassword);
+router.post("/reset-password", rateLimit_middleware_1.resetPasswordRateLimiter, auth_controller_1.AuthController.resetPassword);
+router.post("/change-password", auth_middleware_1.authMiddleware, auth_controller_1.AuthController.changePassword);
+//# sourceMappingURL=auth.routes.js.map
